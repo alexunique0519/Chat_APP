@@ -8,11 +8,11 @@
             <Label Content="Login" HorizontalAlignment="Center" FontSize="25" FontStyle="Normal" FontWeight="Bold"/>
             <StackPanel Orientation="Horizontal" Margin="5, 10">
                 <Label Content="User Name:" />
-                <TextBox x:Name="tb_UserName" Width="190" HorizontalAlignment="Right"/>
+                <TextBox x:Name="tb_UserName" Width="190" HorizontalAlignment="Right" VerticalContentAlignment="Center"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="5, 10">
                 <Label Content="Password:" />
-                <PasswordBox x:Name="pb_Password" Width="190" Margin="10,0,0,0" HorizontalAlignment="Right"  />
+                <PasswordBox x:Name="pb_Password" Width="190" Margin="10,0,0,0" HorizontalAlignment="Right"  VerticalContentAlignment="Center"/>
             </StackPanel>
           
             <Button x:Name="btn_login" Content="Submit" Margin="0, 40"  Width="150" Height="30" Click="Button_Click"/>

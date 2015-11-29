@@ -21,25 +21,72 @@ namespace Chat_App
     /// </summary>
     public partial class MainWindow : Window
     {
+        Chatting_Window wnd = null;
+
         public MainWindow()
         {
             InitializeComponent();
 
-             ParseClient.Initialize("clvkXSjdhataOFi5fkFEwsyQzR7lA9Fh1RhdTj7g", "7ah1lB82ttqpqHIi9g16CQE2HDtJa16HpXOxBcj2");
+            ParseClient.Initialize("6GDVKxEbjD12uv4BCBwBG14O4A0lha677JrSFOt7", "VyrQCedwl8mgM9nObLoB9GYbyH1DKHBJ4vj7jAX7");
 
-             // By convention, the empty string is considered a "Broadcast" channel
-             // Note that we had to add "async" to the definition to use the await keyword
-              ParsePush.SubscribeAsync("");
-            
-        
+            wnd = new Chatting_Window();
+            wnd.Closed += wnd_Closed;
         }
+
+        
+
+        void wnd_Closed(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+       
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            ParseObject gameScore = new ParseObject("GameScore");
-            gameScore["score"] = 1337;
-            gameScore["playerName"] = "Sean Plott";
-            await gameScore.SaveAsync();
+
+            string userName = this.tb_UserName.Text;
+            string password = this.pb_Password.Password;
+
+            if(string.IsNullOrEmpty(userName))
+            {
+               MessageBox.Show("Please input your username.");
+               return;
+            }
+
+            if(string.IsNullOrEmpty(password))
+            {
+                MessageBox.Show("Please input your password");
+                return;
+            }
+
+            ParseUser.LogInAsync(userName, password).ContinueWith(t =>
+            {
+                if (t.IsFaulted || t.IsCanceled)
+                {
+                    MessageBox.Show("Login failed!");
+                    return;
+                }
+                else
+                {
+                    
+                    this.Dispatcher.BeginInvoke(new Action(() => wnd.setCurrentUser(userName)));
+                    this.Dispatcher.BeginInvoke(new Action(() => this.Hide()));
+                    this.Dispatcher.BeginInvoke(new Action(() => wnd.loadAllFriends()));
+                    this.Dispatcher.BeginInvoke(new Action(() => wnd.Show()));
+
+                    //this.Dispatcher.BeginInvoke(new Action(() => wnd.LoadMessage()));
+                   
+                }
+            });
+
+         
         }
+
+        private void showChattingDlg() 
+        {
+           
+        }
+
     }
 }
